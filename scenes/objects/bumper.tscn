@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkqo2vqnx8dyc"]
+
+[ext_resource type="Script" uid="uid://bnfg1oa0ndwax" path="res://scripts/objects/Bumper.cs" id="1_jrn5q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(20, 100)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1"]
+size = Vector2(20, 100)
+
+[node name="Bumper" type="StaticBody2D"]
+script = ExtResource("1_jrn5q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+texture = SubResource("PlaceholderTexture2D_1")

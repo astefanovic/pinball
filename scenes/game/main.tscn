@@ -1,0 +1,111 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcfclw1c3buqn"]
+
+[ext_resource type="PackedScene" uid="uid://dt11sq2h8085n" path="res://scenes/objects/paddle.tscn" id="1_5yns1"]
+[ext_resource type="Script" uid="uid://dnl6xseg1rp71" path="res://scripts/game/Main.cs" id="1_rgg4n"]
+[ext_resource type="PackedScene" uid="uid://bkqo2vqnx8dyc" path="res://scenes/objects/bumper.tscn" id="3_nt4k8"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_rgg4n")
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+
+[node name="LeftWall" type="CollisionPolygon2D" parent="Bounds"]
+polygon = PackedVector2Array(200, 700, 200, 50, 220, 50, 220, 700)
+
+[node name="LeftWallRect" type="ColorRect" parent="Bounds"]
+offset_left = 200.0
+offset_top = 50.0
+offset_right = 220.0
+offset_bottom = 700.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="RightWall" type="CollisionPolygon2D" parent="Bounds"]
+polygon = PackedVector2Array(780, 700, 780, 50, 800, 50, 800, 700)
+
+[node name="RightWallRect" type="ColorRect" parent="Bounds"]
+offset_left = 780.0
+offset_top = 50.0
+offset_right = 800.0
+offset_bottom = 700.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Ceiling" type="CollisionPolygon2D" parent="Bounds"]
+polygon = PackedVector2Array(200, 50, 800, 50, 800, 30, 200, 30)
+
+[node name="CeilingRect" type="ColorRect" parent="Bounds"]
+offset_left = 200.0
+offset_top = 30.0
+offset_right = 800.0
+offset_bottom = 50.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="LaunchVisuals" type="Node2D" parent="Bounds"]
+
+[node name="LaunchWallLeftRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
+offset_left = 720.0
+offset_top = 200.0
+offset_right = 740.0
+offset_bottom = 700.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="LaunchExitRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
+offset_left = 728.0
+offset_top = 108.0
+offset_right = 750.0
+offset_bottom = 189.0
+rotation = -0.785398
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="LaunchFloorRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
+offset_left = 720.0
+offset_top = 680.0
+offset_right = 780.0
+offset_bottom = 700.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="LaunchWallLeft" type="CollisionPolygon2D" parent="Bounds"]
+polygon = PackedVector2Array(720, 700, 720, 200, 740, 200, 740, 700)
+
+[node name="LaunchExitTop" type="CollisionPolygon2D" parent="Bounds"]
+position = Vector2(60, -40)
+polygon = PackedVector2Array(720, 200, 669, 149, 684, 134, 736, 184)
+
+[node name="LaunchFloor" type="CollisionPolygon2D" parent="Bounds"]
+polygon = PackedVector2Array(720, 700, 780, 700, 780, 680, 720, 680)
+
+[node name="PaddleLeft" parent="." instance=ExtResource("1_5yns1")]
+position = Vector2(300, 600)
+rotation = 0.523599
+InputAction = "paddle_left"
+
+[node name="PaddleRight" parent="." instance=ExtResource("1_5yns1")]
+position = Vector2(620, 600)
+rotation = -0.523599
+scale = Vector2(-1, 1)
+InputAction = "paddle_right"
+
+[node name="BumperLeft" parent="." instance=ExtResource("3_nt4k8")]
+position = Vector2(322, 375)
+rotation = 0.261799
+
+[node name="BumperRight" parent="." instance=ExtResource("3_nt4k8")]
+position = Vector2(617, 372)
+rotation = -0.261799
+
+[node name="PaddleWalls" type="StaticBody2D" parent="."]
+
+[node name="LeftWall" type="CollisionPolygon2D" parent="PaddleWalls"]
+polygon = PackedVector2Array(220, 600, 220, 500, 260, 500, 293, 600)
+
+[node name="LeftWallVisual" type="Polygon2D" parent="PaddleWalls"]
+color = Color(0.2, 0.2, 0.2, 1)
+polygon = PackedVector2Array(220, 600, 220, 500, 260, 500, 293, 600)
+
+[node name="RightWall" type="CollisionPolygon2D" parent="PaddleWalls"]
+position = Vector2(409, -8)
+polygon = PackedVector2Array(293, 600, 293, 500, 253, 500, 220, 600)
+
+[node name="RightWallVisual" type="Polygon2D" parent="PaddleWalls"]
+position = Vector2(409, -8)
+color = Color(0.2, 0.2, 0.2, 1)
+polygon = PackedVector2Array(293, 600, 293, 500, 253, 500, 220, 600)

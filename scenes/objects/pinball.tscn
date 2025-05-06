@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhyuwnq3rl0am"]
+
+[ext_resource type="Script" uid="uid://1pd1mwcloetv" path="res://scripts/objects/Pinball.cs" id="1_p2h3l"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_oghtt"]
+friction = 0.05
+bounce = 0.7
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yr7vx"]
+custom_solver_bias = 1.0
+radius = 16.0
+
+[node name="Pinball" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_oghtt")
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 4
+script = ExtResource("1_p2h3l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yr7vx")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.921569, 0.0784314, 0.145098, 1)
+polygon = PackedVector2Array(-16, 0, -11, -11, 0, -16, 11, -11, 16, 0, 11, 11, 0, 16, -11, 11)
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
