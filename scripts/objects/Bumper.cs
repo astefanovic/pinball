@@ -4,7 +4,7 @@ using System;
 public partial class Bumper : StaticBody2D
 {
     [Export]
-    public float BumperForce = 400.0f;
+    public float BumperForce = 4000.0f;
 
     private PhysicsMaterial _physicsMaterial;
 

@@ -8,7 +8,7 @@ bounce = 0.7
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yr7vx"]
 custom_solver_bias = 1.0
-radius = 16.0
+radius = 160.0
 
 [node name="Pinball" type="RigidBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_oghtt")
@@ -22,6 +22,6 @@ shape = SubResource("CircleShape2D_yr7vx")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 color = Color(0.921569, 0.0784314, 0.145098, 1)
-polygon = PackedVector2Array(-16, 0, -11, -11, 0, -16, 11, -11, 16, 0, 11, 11, 0, 16, -11, 11)
+polygon = PackedVector2Array(-160, 0, -110, -110, 0, -160, 110, -110, 160, 0, 110, 110, 0, 160, -110, 110)
 
 [connection signal="body_entered" from="." to="." method="OnBodyEntered"]

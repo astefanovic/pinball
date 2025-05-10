@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://bnfg1oa0ndwax" path="res://scripts/objects/Bumper.cs" id="1_jrn5q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(20, 100)
+size = Vector2(200, 1000)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1"]
-size = Vector2(20, 100)
+size = Vector2(200, 1000)
 
 [node name="Bumper" type="StaticBody2D"]
 script = ExtResource("1_jrn5q")

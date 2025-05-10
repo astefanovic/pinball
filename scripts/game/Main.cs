@@ -22,7 +22,7 @@ public partial class Main : Node
             currentBall.QueueFree();
         }
         currentBall = pinballScene.Instantiate<Pinball>();
-        currentBall.Position = new Vector2(760, 650); // Set initial position
+        currentBall.Position = new Vector2(7600, 6500); // Set initial position
         AddChild(currentBall);
         currentBall.BallOut += OnBallOut;
         GD.Print("Main: New ball spawned");

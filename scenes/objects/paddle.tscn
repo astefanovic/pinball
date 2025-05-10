@@ -4,11 +4,11 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_usjmt"]
 friction = 0.1
-bounce = 1.0
+bounce = 0.8
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_67ntn"]
-radius = 13.0
-height = 120.0
+radius = 130.0
+height = 1220.0
 
 [node name="Paddle" type="StaticBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_usjmt")
@@ -16,11 +16,11 @@ script = ExtResource("1_3kpqr")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(60, 0)
+position = Vector2(600, 0)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_67ntn")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-position = Vector2(60, 0)
+position = Vector2(600, 0)
 color = Color(0.368627, 0.368627, 0.368627, 1)
-polygon = PackedVector2Array(-60, -12, -60, 12, 60, 12, 60, -12)
+polygon = PackedVector2Array(-600, -120, -600, 120, 600, 120, 600, -120)

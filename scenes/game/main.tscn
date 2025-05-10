@@ -10,102 +10,102 @@ script = ExtResource("1_rgg4n")
 [node name="Bounds" type="StaticBody2D" parent="."]
 
 [node name="LeftWall" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(200, 700, 200, 50, 220, 50, 220, 700)
+polygon = PackedVector2Array(2000, 7000, 2000, 500, 2200, 500, 2200, 7000)
 
 [node name="LeftWallRect" type="ColorRect" parent="Bounds"]
-offset_left = 200.0
-offset_top = 50.0
-offset_right = 220.0
-offset_bottom = 700.0
+offset_left = 2000.0
+offset_top = 500.0
+offset_right = 2200.0
+offset_bottom = 7000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="RightWall" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(780, 700, 780, 50, 800, 50, 800, 700)
+polygon = PackedVector2Array(7800, 7000, 7800, 500, 8000, 500, 8000, 7000)
 
 [node name="RightWallRect" type="ColorRect" parent="Bounds"]
-offset_left = 780.0
-offset_top = 50.0
-offset_right = 800.0
-offset_bottom = 700.0
+offset_left = 7800.0
+offset_top = 500.0
+offset_right = 8000.0
+offset_bottom = 7000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="Ceiling" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(200, 50, 800, 50, 800, 30, 200, 30)
+polygon = PackedVector2Array(2000, 500, 8000, 500, 8000, 300, 2000, 300)
 
 [node name="CeilingRect" type="ColorRect" parent="Bounds"]
-offset_left = 200.0
-offset_top = 30.0
-offset_right = 800.0
-offset_bottom = 50.0
+offset_left = 2000.0
+offset_top = 300.0
+offset_right = 8000.0
+offset_bottom = 500.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchVisuals" type="Node2D" parent="Bounds"]
 
 [node name="LaunchWallLeftRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
-offset_left = 720.0
-offset_top = 200.0
-offset_right = 740.0
-offset_bottom = 700.0
+offset_left = 7200.0
+offset_top = 2000.0
+offset_right = 7400.0
+offset_bottom = 7000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchExitRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
-offset_left = 728.0
-offset_top = 108.0
-offset_right = 750.0
-offset_bottom = 189.0
+offset_left = 7280.0
+offset_top = 1080.0
+offset_right = 7500.0
+offset_bottom = 1890.0
 rotation = -0.785398
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchFloorRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
-offset_left = 720.0
-offset_top = 680.0
-offset_right = 780.0
-offset_bottom = 700.0
+offset_left = 7200.0
+offset_top = 6800.0
+offset_right = 7800.0
+offset_bottom = 7000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchWallLeft" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(720, 700, 720, 200, 740, 200, 740, 700)
+polygon = PackedVector2Array(7200, 7000, 7200, 2000, 7400, 2000, 7400, 7000)
 
 [node name="LaunchExitTop" type="CollisionPolygon2D" parent="Bounds"]
-position = Vector2(60, -40)
-polygon = PackedVector2Array(720, 200, 669, 149, 684, 134, 736, 184)
+position = Vector2(600, -400)
+polygon = PackedVector2Array(7200, 2000, 6690, 1490, 6840, 1340, 7360, 1840)
 
 [node name="LaunchFloor" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(720, 700, 780, 700, 780, 680, 720, 680)
+polygon = PackedVector2Array(7200, 7000, 7800, 7000, 7800, 6800, 7200, 6800)
 
 [node name="PaddleLeft" parent="." instance=ExtResource("1_5yns1")]
-position = Vector2(300, 600)
+position = Vector2(3000, 6000)
 rotation = 0.523599
 InputAction = "paddle_left"
 
 [node name="PaddleRight" parent="." instance=ExtResource("1_5yns1")]
-position = Vector2(620, 600)
+position = Vector2(6200, 6000)
 rotation = -0.523599
 scale = Vector2(-1, 1)
 InputAction = "paddle_right"
 
 [node name="BumperLeft" parent="." instance=ExtResource("3_nt4k8")]
-position = Vector2(322, 375)
+position = Vector2(3220, 3750)
 rotation = 0.261799
 
 [node name="BumperRight" parent="." instance=ExtResource("3_nt4k8")]
-position = Vector2(617, 372)
+position = Vector2(6170, 3720)
 rotation = -0.261799
 
 [node name="PaddleWalls" type="StaticBody2D" parent="."]
 
 [node name="LeftWall" type="CollisionPolygon2D" parent="PaddleWalls"]
-polygon = PackedVector2Array(220, 600, 220, 500, 260, 500, 293, 600)
+polygon = PackedVector2Array(2200, 6000, 2200, 5000, 2600, 5000, 2930, 6000)
 
 [node name="LeftWallVisual" type="Polygon2D" parent="PaddleWalls"]
 color = Color(0.2, 0.2, 0.2, 1)
-polygon = PackedVector2Array(220, 600, 220, 500, 260, 500, 293, 600)
+polygon = PackedVector2Array(2200, 6000, 2200, 5000, 2600, 5000, 2930, 6000)
 
 [node name="RightWall" type="CollisionPolygon2D" parent="PaddleWalls"]
-position = Vector2(409, -8)
-polygon = PackedVector2Array(293, 600, 293, 500, 253, 500, 220, 600)
+position = Vector2(4090, -80)
+polygon = PackedVector2Array(2930, 6000, 2930, 5000, 2530, 5000, 2200, 6000)
 
 [node name="RightWallVisual" type="Polygon2D" parent="PaddleWalls"]
-position = Vector2(409, -8)
+position = Vector2(4090, -80)
 color = Color(0.2, 0.2, 0.2, 1)
-polygon = PackedVector2Array(293, 600, 293, 500, 253, 500, 220, 600)
+polygon = PackedVector2Array(2930, 6000, 2930, 5000, 2530, 5000, 2200, 6000)

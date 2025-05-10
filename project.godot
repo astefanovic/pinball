@@ -17,9 +17,12 @@ config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=1024
-window/size/viewport_height=768
+window/size/viewport_width=10240
+window/size/viewport_height=7680
 window/size/resizable=false
+window/size/window_width_override=1024
+window/size/window_height_override=768
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
@@ -45,8 +48,13 @@ paddle_right={
 
 [physics]
 
+common/physics_ticks_per_second=120
+2d/physics_engine="Rapier2D"
 2d/default_angular_damp=0.129
-2d/solver/contact_max_allowed_penetration=0.01
+2d/solver/contact_max_allowed_penetration=0.1
+2d/solver/velocity_iterations=12
+2d/solver/position_iterations=12
+2d/solver/contact_bias=0.1
 
 [rendering]
 

@@ -50,7 +50,7 @@ public partial class Paddle : StaticBody2D
             GD.Print($"[Paddle {Name}] Angular Velocity: {Mathf.RadToDeg(angularVelocity):F2}°/frame");
 
             // Calculate paddle's tip velocity (at collision point)
-            float paddleLength = 60.0f; // Half-length of paddle based on scene
+            float paddleLength = 600.0f; // Half-length of paddle based on scene
             Vector2 tipVelocity = new Vector2(
                 -Mathf.Sin(Rotation) * angularVelocity * paddleLength,
                 Mathf.Cos(Rotation) * angularVelocity * paddleLength
@@ -78,7 +78,7 @@ public partial class Paddle : StaticBody2D
             GD.Print($"[Paddle {Name}] Impact Velocity: {impactVelocity}, Hit Fraction: {hitFraction:F2}");
             
             // Calculate paddle angular speed factor
-            float angularSpeedFactor = Mathf.Abs(angularVelocity) * 50f; // Scale up angular velocity's impact
+            float angularSpeedFactor = Mathf.Abs(angularVelocity) * 500f; // Scale up angular velocity's impact
             
             // Calculate reflection direction considering paddle motion
             Vector2 motionInfluence = impactVelocity * 1.5f; // Increase impact of paddle motion
@@ -87,7 +87,7 @@ public partial class Paddle : StaticBody2D
             GD.Print($"[Paddle {Name}] Base Direction: {baseDirection}, Motion Influence: {motionInfluence}, Angular Speed: {angularSpeedFactor:F2}");
             
             // Calculate impulse magnitude with speed limiting
-            float baseImpulse = Input.IsActionPressed(InputAction) ? 700f : 300f; // Reduced base impulse
+            float baseImpulse = Input.IsActionPressed(InputAction) ? 7000f : 3000f; // Reduced base impulse
             
             // Add angular speed bonus
             baseImpulse += angularSpeedFactor;
@@ -98,7 +98,7 @@ public partial class Paddle : StaticBody2D
             baseImpulse *= positionScale * movementScale;
             
             // Reduce impulse when ball is already moving fast
-            float maxSpeed = 800f;
+            float maxSpeed = 8000f;
             float speedFactor = Mathf.Max(0f, 1f - (speed / maxSpeed));
             baseImpulse *= speedFactor;
             
