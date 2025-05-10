@@ -45,17 +45,22 @@ public partial class Paddle : StaticBody2D
         {
             GD.Print($"[Paddle] Pre-collision - Ball Position: {node2D.GlobalPosition}, Velocity: {rb.LinearVelocity}, Paddle Rotation: {Mathf.RadToDeg(Rotation):F2}°");
             
-            // Calculate paddle's angular velocity in radians per physics frame
-            float angularVelocity = Rotation - lastRotation;
-            GD.Print($"[Paddle {Name}] Angular Velocity: {Mathf.RadToDeg(angularVelocity):F2}°/frame");
+            // Calculate paddle's true angular speed in radians per second
+            float physicsDelta = (float)GetPhysicsProcessDeltaTime();
+            float angularSpeedRadPerSec = 0f;
+            if (physicsDelta > 0) // Avoid division by zero if physicsDelta is somehow zero
+            {
+                angularSpeedRadPerSec = (Rotation - lastRotation) / physicsDelta;
+            }
+            GD.Print($"[Paddle {Name}] Angular Speed: {Mathf.RadToDeg(angularSpeedRadPerSec):F2}°/sec (Delta: {physicsDelta:F4}s, AngleChange: {Mathf.RadToDeg(Rotation - lastRotation):F2}°)");
 
-            // Calculate paddle's tip velocity (at collision point)
+            // Calculate paddle's tip velocity (at collision point) using true angular speed
             float paddleLength = 600.0f; // Half-length of paddle based on scene
-            Vector2 tipVelocity = new Vector2(
-                -Mathf.Sin(Rotation) * angularVelocity * paddleLength,
-                Mathf.Cos(Rotation) * angularVelocity * paddleLength
+            Vector2 tipVelocityVec = new Vector2( // This is a velocity vector (speed * direction)
+                -Mathf.Sin(Rotation) * paddleLength * angularSpeedRadPerSec,
+                Mathf.Cos(Rotation) * paddleLength * angularSpeedRadPerSec
             );
-            GD.Print($"[Paddle {Name}] Tip Velocity: {tipVelocity}");
+            GD.Print($"[Paddle {Name}] Tip Velocity Vector: {tipVelocityVec}");
 
             // Calculate paddle direction vector based on current angle
             Vector2 paddleDir = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation));
@@ -74,14 +79,16 @@ public partial class Paddle : StaticBody2D
             
             // Calculate impact point velocity (scaled by distance from pivot)
             float hitFraction = Mathf.Clamp(hitPosition / paddleLength, 0f, 1f);
-            Vector2 impactVelocity = tipVelocity * hitFraction;
+            Vector2 impactVelocity = tipVelocityVec * hitFraction; // This is impact point's velocity vector
             GD.Print($"[Paddle {Name}] Impact Velocity: {impactVelocity}, Hit Fraction: {hitFraction:F2}");
             
-            // Calculate paddle angular speed factor
-            float angularSpeedFactor = Mathf.Abs(angularVelocity) * 500f; // Scale up angular velocity's impact
+            // Calculate paddle angular speed factor using true angular speed
+            // The constant 8.333f is derived from the original 500f (500f / 60fps approx 8.333f).
+            // This value might need further tuning for desired responsiveness.
+            float angularSpeedFactor = Mathf.Abs(angularSpeedRadPerSec) * 8.333f; 
             
             // Calculate reflection direction considering paddle motion
-            Vector2 motionInfluence = impactVelocity * 1.5f; // Increase impact of paddle motion
+            Vector2 motionInfluence = impactVelocity * 1.5f; // Increase impact of paddle motion. impactVelocity is now a true velocity.
             Vector2 baseDirection = (paddleDir + relativePosNorm).Normalized();
             Vector2 impulseDir = (baseDirection + motionInfluence.Normalized()).Normalized();
             GD.Print($"[Paddle {Name}] Base Direction: {baseDirection}, Motion Influence: {motionInfluence}, Angular Speed: {angularSpeedFactor:F2}");
@@ -155,7 +162,11 @@ public partial class Paddle : StaticBody2D
         }
         
         lastRotation = Rotation;
-        Rotation = Mathf.Lerp(Rotation, targetAngle, 0.4f); // Smooth rotation
+        // Scale interpolation factor by delta for frame-rate independent rotation speed
+        // The constant 24.0f is derived from the original 0.4f (0.4f * 60fps = 24.0f).
+        // This value might need further tuning for desired responsiveness.
+        // Mathf.Min is used to ensure the factor doesn't exceed 1.0 if delta is unusually large.
+        Rotation = Mathf.Lerp(Rotation, targetAngle, Mathf.Min(24.0f * (float)delta, 1.0f)); // Smooth rotation
         
         // Debug print once to verify paddle is processing
         if (!debugPrinted)
