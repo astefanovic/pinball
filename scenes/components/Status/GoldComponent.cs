@@ -8,6 +8,16 @@ public partial class GoldComponent : Node
 
     public override void _Ready()
     {
+        // Avoid subscribing when used inside PostRoundUI previews to prevent duplicate logs.
+        if (!IsInsideTree() || GetTree().Root == null) return;
+        Node ancestor = this;
+        while (ancestor != null)
+        {
+            if (ancestor.Name == "PostRoundUI")
+                return;
+            ancestor = ancestor.GetParent();
+        }
+
         GoldManager.OnGoldScored += _OnGoldScored;
         GoldManager.OnGoldChanged += _OnGoldChanged;
     }

@@ -58,6 +58,7 @@ public partial class ChainTriggerPassive : BasePassive
             if (nx >= 0 && nx < GridManager.Instance.BumperGrid.GetLength(0) && ny >= 0 && ny < GridManager.Instance.BumperGrid.GetLength(1))
             {
                 var adjacent = GridManager.Instance.BumperGrid[nx, ny];
+                // Allow any PopBumper-derived type (Burn/Gold/Charge/Mult) to be affected by the chain.
                 if (adjacent is PopBumper pop && !triggeredBumpers.Contains(pop))
                 {
                     // Mark it as triggered to avoid duplicates in this pass

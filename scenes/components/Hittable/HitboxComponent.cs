@@ -19,8 +19,38 @@ public partial class HitboxComponent : Area2D
         }
         if (HittableComponent == null)
         {
-            GD.PrintErr("HitboxComponent: HittableComponent is not assigned. Please assign it in the editor.");
-            return;
+            // Try to auto-find a HittableComponent on the parent node (common scene setups have Hitbox as a child of the bumper)
+            var parent = GetParent();
+            if (parent != null)
+            {
+                // Direct child with HittableComponent
+                var candidate = parent.GetNodeOrNull<HittableComponent>("HittableComponent");
+                if (candidate == null)
+                {
+                    // Search children of parent for a HittableComponent
+                    foreach (Node child in parent.GetChildren())
+                    {
+                        if (child is HittableComponent hc)
+                        {
+                            candidate = hc;
+                            break;
+                        }
+                    }
+                }
+
+                if (candidate != null)
+                {
+                    HittableComponent = candidate;
+                    GD.Print($"HitboxComponent: Auto-assigned HittableComponent from parent '{parent.Name}'.");
+                }
+            }
+
+            if (HittableComponent == null)
+            {
+                GD.PrintErr("HitboxComponent: HittableComponent is not assigned and could not be auto-resolved. Please assign it in the editor.");
+                // Continue without returning so that other systems (like PassiveManager notifications) can still run,
+                // but avoid null deref when RegisterHit is attempted.
+            }
         }
 
         // Connect the body_entered signal
@@ -36,22 +66,17 @@ public partial class HitboxComponent : Area2D
 
             // For bumpers, only register a hit on the local hittable component so only the
             // bumper that was actually struck emits particles and awards score.
+            // Register the hit on the local hittable component (if present)
             if (HittableComponent != null)
             {
                 HittableComponent.RegisterHit(pinball, GlobalPosition); // Pass GlobalPosition for particle spawn
             }
-            
-            // Notify PassiveManager if this is a PopBumper hit by a pinball
-            // Only notify the PassiveManager if the direct parent is exactly a PopBumper
-            var parentBumperExact = GetParent();
-            if (parentBumperExact != null && parentBumperExact.GetType() == typeof(PopBumper) && PassiveManager.Instance != null)
+
+            // Notify PassiveManager only if the direct parent is exactly a PopBumper (no subclasses).
+            var parentNode = GetParent();
+            if (parentNode != null && parentNode.GetType() == typeof(PopBumper) && PassiveManager.Instance != null)
             {
-                PassiveManager.Instance.OnPopBumperHit((PopBumper)parentBumperExact);
-            }
-            
-            else
-            {
-                GD.PrintErr("HitboxComponent: HittableComponent is null, cannot register hit.");
+                PassiveManager.Instance.OnPopBumperHit((PopBumper)parentNode);
             }
         }
     }

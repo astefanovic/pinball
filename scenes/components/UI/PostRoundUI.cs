@@ -117,7 +117,7 @@ public partial class PostRoundUI : Control
                 {
                     panel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
                     panel.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
-                    panel.CustomMinimumSize = new Vector2(200, 150); // Reduced height
+                    panel.CustomMinimumSize = new Vector2(300, 200); // Increased to fit larger preview fonts
                     panel.MouseFilter = Control.MouseFilterEnum.Stop;
                 }
             }
@@ -129,14 +129,16 @@ public partial class PostRoundUI : Control
                 {
                     panel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
                     panel.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
-                    panel.CustomMinimumSize = new Vector2(200, 150);
+                    panel.CustomMinimumSize = new Vector2(300, 200);
                     panel.MouseFilter = Control.MouseFilterEnum.Stop;
                 }
             }
             // The redundant loop for panel node found/null is removed here.
 
             ZIndex = 10;
-            SetupUI();
+            // Do not call SetupUI() here - defer population until ShowUI is invoked.
+            // ShowUI already calls CallDeferred(nameof(SetupUI)) to ensure layout is ready
+            // and other managers (PassiveManager) have been created by Main.cs.
             // Hide();
         }
         catch (Exception ex)
@@ -412,6 +414,8 @@ public partial class PostRoundUI : Control
             skipLabel.Text = "Skip Passive";
             skipLabel.HorizontalAlignment = HorizontalAlignment.Center;
             skipLabel.VerticalAlignment = VerticalAlignment.Center;
+            skipLabel.AddThemeConstantOverride("font_size", 160);
+            skipLabel.CustomMinimumSize = new Vector2(300, 80);
             
             var centerContainer = panel.GetNodeOrNull("PassiveCenterContainer");
             if (centerContainer == null)
@@ -436,17 +440,17 @@ public partial class PostRoundUI : Control
     var nameLabel = new Label();
     nameLabel.Text = passive.Name;
     nameLabel.HorizontalAlignment = HorizontalAlignment.Center;
-    // Make label large similar to FPSCounter font sizing
-    nameLabel.AddThemeConstantOverride("font_size", 36);
-    nameLabel.CustomMinimumSize = new Vector2(200, 48);
+    // Make passive name large to match HUD sizing (scaled down from full HUD labels)
+    nameLabel.AddThemeConstantOverride("font_size", 160);
+    nameLabel.CustomMinimumSize = new Vector2(300, 80);
     vbox.AddChild(nameLabel);
         
     var descLabel = new Label();
     descLabel.Text = passive.Description;
     descLabel.HorizontalAlignment = HorizontalAlignment.Center;
     descLabel.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-    descLabel.AddThemeConstantOverride("font_size", 18);
-    descLabel.CustomMinimumSize = new Vector2(200, 36);
+    descLabel.AddThemeConstantOverride("font_size", 48);
+    descLabel.CustomMinimumSize = new Vector2(300, 60);
     vbox.AddChild(descLabel);
 
         // Add to the appropriate center container

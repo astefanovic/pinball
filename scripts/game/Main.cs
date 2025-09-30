@@ -81,6 +81,17 @@ public override void _Ready()
     postRoundUI.OnPassiveSelectedEvent += OnPassiveSelected;
     
     // Create and add PassiveManager
+    // Ensure a RoundManager exists early so other managers can subscribe to its events
+    if (RoundManager.Instance == null)
+    {
+        var existingRm = GetNodeOrNull<RoundManager>("/root/Root") ?? GetNodeOrNull<RoundManager>("RoundManager");
+        if (existingRm == null)
+        {
+            var roundManager = new RoundManager();
+            AddChild(roundManager);
+        }
+    }
+
     var passiveManager = new PassiveManager();
     AddChild(passiveManager);
     BurnManager.OnScoreBurned += OnBurnScore;
