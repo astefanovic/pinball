@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://c3vqm7xk3qr4x"]
+
+[ext_resource type="Script" uid="uid://d5vqm7xk3qr4x" path="res://scenes/components/Placeable/Bumpers/DropTarget.cs" id="1_droptarget"]
+[ext_resource type="PackedScene" uid="uid://cidbl15qv1r6w" path="res://scenes/components/visual/ScoreParticle.tscn" id="2_droptarget"]
+[ext_resource type="PackedScene" uid="uid://dl2cowsdmo6g3" path="res://scenes/components/Hittable/HittableComponent.tscn" id="3_droptarget"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_target1"]
+size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_target2"]
+size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_target3"]
+size = Vector2(80, 80)
+
+[node name="DropTarget" type="Area2D" node_paths=PackedStringArray("HittableComponent")]
+script = ExtResource("1_droptarget")
+HittableComponent = NodePath("Hittable")
+
+[node name="ScoreParticle" parent="." instance=ExtResource("2_droptarget")]
+
+[node name="Hittable" parent="." node_paths=PackedStringArray("ScoreParticleComponent") instance=ExtResource("3_droptarget")]
+ScoreParticleComponent = NodePath("../ScoreParticle")
+DefaultParticleColor = Color(1, 0.6, 0.2, 1)
+ScoreValue = 300
+
+[node name="Target1" type="Area2D" parent="."]
+position = Vector2(-120, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target1"]
+shape = SubResource("RectangleShape2D_target1")
+
+[node name="Polygon2D" type="Polygon2D" parent="Target1"]
+color = Color(1, 0.6, 0.2, 1)
+polygon = PackedVector2Array(-40, -40, 40, -40, 40, 40, -40, 40)
+
+[node name="Target2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target2"]
+shape = SubResource("RectangleShape2D_target2")
+
+[node name="Polygon2D" type="Polygon2D" parent="Target2"]
+color = Color(1, 0.6, 0.2, 1)
+polygon = PackedVector2Array(-40, -40, 40, -40, 40, 40, -40, 40)
+
+[node name="Target3" type="Area2D" parent="."]
+position = Vector2(120, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target3"]
+shape = SubResource("RectangleShape2D_target3")
+
+[node name="Polygon2D" type="Polygon2D" parent="Target3"]
+color = Color(1, 0.6, 0.2, 1)
+polygon = PackedVector2Array(-40, -40, 40, -40, 40, 40, -40, 40)

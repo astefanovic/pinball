@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8vqm5xk2qr3w"]
+
+[ext_resource type="Script" uid="uid://dr8vqm5xk2qr3w" path="res://scenes/components/Placeable/Bumpers/Rollover.cs" id="1_rollover"]
+[ext_resource type="PackedScene" uid="uid://cidbl15qv1r6w" path="res://scenes/components/visual/ScoreParticle.tscn" id="2_rollover"]
+[ext_resource type="PackedScene" uid="uid://dl2cowsdmo6g3" path="res://scenes/components/Hittable/HittableComponent.tscn" id="3_rollover"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rollover"]
+
+[node name="Rollover" type="Area2D" node_paths=PackedStringArray("HittableComponent")]
+script = ExtResource("1_rollover")
+HittableComponent = NodePath("Hittable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_rollover")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.8, 0.4, 0.8, 1)
+polygon = PackedVector2Array(120, 0, 110.87, 45.92, 84.85, 84.85, 45.92, 110.87, 0, 120, -45.92, 110.87, -84.85, 84.85, -110.87, 45.92, -120, 0, -110.87, -45.92, -84.85, -84.85, -45.92, -110.87, 0, -120, 45.92, -110.87, 84.85, -84.85, 110.87, -45.92)
+
+[node name="ScoreParticle" parent="." instance=ExtResource("2_rollover")]
+
+[node name="Hittable" parent="." node_paths=PackedStringArray("ScoreParticleComponent") instance=ExtResource("3_rollover")]
+ScoreParticleComponent = NodePath("../ScoreParticle")
+DefaultParticleColor = Color(0.8, 0.4, 0.8, 1)
+ScoreValue = 50

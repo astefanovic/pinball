@@ -8,11 +8,11 @@ public partial class GridManager : Node
     [Export] public int Rows = 4;
     [Export] public int Columns = 4;
 
-    public PopBumper[,] BumperGrid { get; private set; }
+    public ITrigger[,] BumperGrid { get; private set; }
 
     public override void _Ready()
     {
         Instance = this;
-        BumperGrid = new PopBumper[Rows, Columns];
+        BumperGrid = new ITrigger[Rows, Columns];
     }
 }

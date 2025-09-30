@@ -11,6 +11,8 @@ public partial class PostRoundUI : Control
         GoldPopBumper,
         ChargePopBumper,
         MultBumper,
+        Rollover,
+        DropTarget,
         None
     }
 
@@ -65,14 +67,18 @@ public partial class PostRoundUI : Control
                 GD.Load<PackedScene>("res://scenes/components/Placeable/Bumpers/BurnPopBumper.tscn"),
                 GD.Load<PackedScene>("res://scenes/components/Placeable/Bumpers/GoldPopBumper.tscn"),
                 GD.Load<PackedScene>("res://scenes/components/Placeable/Bumpers/ChargePopBumper.tscn"),
-                GD.Load<PackedScene>("res://scenes/components/Placeable/Bumpers/MultBumper.tscn")
+                GD.Load<PackedScene>("res://scenes/components/Placeable/Bumpers/MultBumper.tscn"),
+                GD.Load<PackedScene>("res://scenes/components/Placeable/Bumpers/Rollover.tscn"),
+                GD.Load<PackedScene>("res://scenes/components/Placeable/Bumpers/DropTarget.tscn")
             };
             _placeableBumperTypes = new PostRoundUI.BumperType[] {
                 BumperType.PopBumper,
                 BumperType.BurnPopBumper,
                 BumperType.GoldPopBumper,
                 BumperType.ChargePopBumper,
-                BumperType.MultBumper
+                BumperType.MultBumper,
+                BumperType.Rollover,
+                BumperType.DropTarget
             };
 
             Node vbox = GetNodeOrNull("VBoxContainer");

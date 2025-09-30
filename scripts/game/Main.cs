@@ -309,11 +309,28 @@ private void OnBumperSelected(PostRoundUI.BumperType bumperType, PackedScene bum
             return;
         }
 
-        // Try to instantiate and place the bumper. Guard against invalid scene types.
-        PopBumper newBumper = null;
+        // Try to instantiate and place the component. Guard against invalid scene types.
+        Node2D newComponent = null;
+        ITrigger newTrigger = null;
         try
         {
-            newBumper = bumperScene.Instantiate<PopBumper>();
+            // Instantiate as Node2D first, then check if it's an ITrigger
+            newComponent = bumperScene.Instantiate<Node2D>();
+            if (newComponent is ITrigger trigger)
+            {
+                newTrigger = trigger;
+            }
+            else
+            {
+                GD.PrintErr($"Main: Instantiated component is not an ITrigger: {newComponent.GetType()}");
+                newComponent.QueueFree();
+                // Re-show UI so player can try a different bumper
+                if (!postRoundUI.Visible)
+                    postRoundUI.ShowUI();
+                placementGrid.Show();
+                placementGrid.AcceptClicks = false;
+                return;
+            }
         }
         catch (Exception ex)
         {
@@ -326,17 +343,17 @@ private void OnBumperSelected(PostRoundUI.BumperType bumperType, PackedScene bum
             return;
         }
 
-    gridMgr.BumperGrid[gridPosition.X, gridPosition.Y] = newBumper;
-        newBumper.GridPosition = gridPosition;
+    gridMgr.BumperGrid[gridPosition.X, gridPosition.Y] = newTrigger;
+        newTrigger.GridPosition = gridPosition;
 
     Vector2 cellSize = new Vector2(placementGrid.Size.X / gridMgr.Columns, placementGrid.Size.Y / gridMgr.Rows);
         Vector2 cellCenterLocal = new Vector2(
             gridPosition.X * cellSize.X + cellSize.X / 2,
             gridPosition.Y * cellSize.Y + cellSize.Y / 2
         );
-        newBumper.GlobalPosition = placementGrid.GlobalPosition + cellCenterLocal;
+        newTrigger.GlobalPosition = placementGrid.GlobalPosition + cellCenterLocal;
 
-        AddChild(newBumper);
+        AddChild(newComponent);
         GD.Print($"Placed {bumperType} at grid {gridPosition}");
 
         // Successful placement: hide grid, advance round and spawn a new ball
