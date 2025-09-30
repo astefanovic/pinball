@@ -25,7 +25,10 @@ public partial class DropTarget : Area2D, ITrigger
                 if (targetIndex < 3)
                 {
                     _targetAreas[targetIndex] = area;
-                    area.BodyEntered += (body) => OnTargetBodyEntered(body, targetIndex);
+                    
+                    // Capture the index in a local variable to avoid closure issues
+                    int index = targetIndex;
+                    area.BodyEntered += (body) => OnTargetBodyEntered(body, index);
                     
                     // Find the visual child (Polygon2D or similar)
                     foreach (Node visualChild in area.GetChildren())
