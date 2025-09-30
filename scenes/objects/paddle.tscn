@@ -4,13 +4,13 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_usjmt"]
 friction = 0.1
-bounce = 0.8
+bounce = 0.5
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_67ntn"]
 radius = 130.0
 height = 1220.0
 
-[node name="Paddle" type="StaticBody2D"]
+[node name="Paddle" type="AnimatableBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_usjmt")
 script = ExtResource("1_3kpqr")
 metadata/_edit_group_ = true

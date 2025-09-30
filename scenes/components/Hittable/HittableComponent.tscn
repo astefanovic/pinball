@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dl2cowsdmo6g3"]
+
+[ext_resource type="Script" uid="uid://c2s32s1kqu1x4" path="res://scenes/components/Hittable/HittableComponent.cs" id="1_0v3f2"]
+
+[node name="Hittable" type="Node"]
+script = ExtResource("1_0v3f2")

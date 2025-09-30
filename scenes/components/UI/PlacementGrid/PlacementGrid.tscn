@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcnls25nalt7m"]
+
+[ext_resource type="Script" uid="uid://b2ndc7bwr8c0m" path="res://scenes/components/UI/PlacementGrid/PlacementGrid.cs" id="1_script"]
+
+[node name="PlacementGrid" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 2100.0
+offset_top = 200.0
+offset_right = 7300.0
+offset_bottom = 6066.67
+script = ExtResource("1_script")

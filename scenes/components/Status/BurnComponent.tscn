@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://1i4dssnfewd8"]
+
+[ext_resource type="Script" uid="uid://cggg2lbvfet6l" path="res://scenes/components/Status/BurnComponent.cs" id="1_d8ena"]
+
+[node name="BurnComponent" type="Node"]
+script = ExtResource("1_d8ena")

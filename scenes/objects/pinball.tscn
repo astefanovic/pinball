@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://1pd1mwcloetv" path="res://scripts/objects/Pinball.cs" id="1_p2h3l"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_oghtt"]
-friction = 0.05
-bounce = 0.7
+friction = 0.02
+bounce = 0.55
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yr7vx"]
 custom_solver_bias = 1.0

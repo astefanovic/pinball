@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://ii556n1mir0e"]
+
+[ext_resource type="Script" uid="uid://rs0qiuq5sduh" path="res://scenes/components/Placeable/Bumpers/GoldPopBumper.cs" id="1_gold"]
+[ext_resource type="PackedScene" uid="uid://cidbl15qv1r6w" path="res://scenes/components/visual/ScoreParticle.tscn" id="2_2mcp2"]
+[ext_resource type="PackedScene" uid="uid://chblnmxauou5u" path="res://scenes/components/Hittable/HitboxComponent.tscn" id="3_78pg7"]
+[ext_resource type="PackedScene" uid="uid://dl2cowsdmo6g3" path="res://scenes/components/Hittable/HittableComponent.tscn" id="4_kiq4b"]
+[ext_resource type="PackedScene" uid="uid://ctplqe5bciaht" path="res://scenes/components/Status/GoldComponent.tscn" id="5_gold"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_depmh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rx0hs"]
+
+[node name="GoldPopBumper" type="RigidBody2D" node_paths=PackedStringArray("HitboxComponent", "GoldComponent")]
+script = ExtResource("1_gold")
+HitboxComponent = NodePath("HitboxComponent")
+GoldComponent = NodePath("GoldComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_depmh")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.889236, 0.791762, 0, 1)
+polygon = PackedVector2Array(160, 0, 147.82, 61.22, 113.14, 113.14, 61.22, 147.82, 0, 160, -61.22, 147.82, -113.14, 113.14, -147.82, 61.22, -160, 0, -147.82, -61.22, -113.14, -113.14, -61.22, -147.82, 0, -160, 61.22, -147.82, 113.14, -113.14, 147.82, -61.22)
+
+[node name="ScoreParticle" parent="." instance=ExtResource("2_2mcp2")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("CollisionShape2DNode", "HittableComponent") instance=ExtResource("3_78pg7")]
+CollisionShape2DNode = NodePath("CollisionShape2D")
+HittableComponent = NodePath("../Hittable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_rx0hs")
+
+[node name="Hittable" parent="." node_paths=PackedStringArray("ScoreParticleComponent", "GoldComponent") instance=ExtResource("4_kiq4b")]
+ScoreParticleComponent = NodePath("../ScoreParticle")
+GoldComponent = NodePath("../GoldComponent")
+
+[node name="GoldComponent" parent="." instance=ExtResource("5_gold")]

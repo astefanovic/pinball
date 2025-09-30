@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://c3w7v4e6x6x6x"]
+
+[ext_resource type="Script" uid="uid://045endid5v16" path="res://scenes/components/Placeable/Bumpers/MultBumper.cs" id="1_mult"]
+[ext_resource type="PackedScene" uid="uid://cidbl15qv1r6w" path="res://scenes/components/visual/ScoreParticle.tscn" id="2_score"]
+[ext_resource type="PackedScene" uid="uid://chblnmxauou5u" path="res://scenes/components/Hittable/HitboxComponent.tscn" id="3_hitbox"]
+[ext_resource type="PackedScene" uid="uid://dl2cowsdmo6g3" path="res://scenes/components/Hittable/HittableComponent.tscn" id="4_hittable"]
+[ext_resource type="Script" uid="uid://bh4mx8mh0ot71" path="res://scenes/components/Status/MultComponent.cs" id="5_multc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_main"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hitbox"]
+
+[node name="MultBumper" type="RigidBody2D" node_paths=PackedStringArray("HitboxComponent")]
+script = ExtResource("1_mult")
+HitboxComponent = NodePath("HitboxComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_main")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.7, 0.3, 1, 1)
+polygon = PackedVector2Array(160, 0, 147.82, 61.22, 113.14, 113.14, 61.22, 147.82, 0, 160, -61.22, 147.82, -113.14, 113.14, -147.82, 61.22, -160, 0, -147.82, -61.22, -113.14, -113.14, -61.22, -147.82, 0, -160, 61.22, -147.82, 113.14, -113.14, 147.82, -61.22)
+
+[node name="ScoreParticle" parent="." instance=ExtResource("2_score")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("CollisionShape2DNode", "HittableComponent") instance=ExtResource("3_hitbox")]
+CollisionShape2DNode = NodePath("CollisionShape2D")
+HittableComponent = NodePath("../Hittable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_hitbox")
+
+[node name="Hittable" parent="." node_paths=PackedStringArray("ScoreParticleComponent", "MultComponent") instance=ExtResource("4_hittable")]
+ScoreParticleComponent = NodePath("../ScoreParticle")
+MultComponent = NodePath("../MultComponent")
+
+[node name="MultComponent" type="Node" parent="."]
+script = ExtResource("5_multc")

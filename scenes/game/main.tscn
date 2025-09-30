@@ -1,42 +1,116 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcfclw1c3buqn"]
+[gd_scene load_steps=7 format=3 uid="uid://bcfclw1c3buqn"]
 
 [ext_resource type="PackedScene" uid="uid://dt11sq2h8085n" path="res://scenes/objects/paddle.tscn" id="1_5yns1"]
 [ext_resource type="Script" uid="uid://dnl6xseg1rp71" path="res://scripts/game/Main.cs" id="1_rgg4n"]
-[ext_resource type="PackedScene" uid="uid://bkqo2vqnx8dyc" path="res://scenes/objects/bumper.tscn" id="3_nt4k8"]
+[ext_resource type="PackedScene" uid="uid://dtematou1h4q6" path="res://scenes/hud/FPSCounter.tscn" id="4_uaf1y"]
+[ext_resource type="PackedScene" uid="uid://dcnls25nalt7m" path="res://scenes/components/UI/PlacementGrid/PlacementGrid.tscn" id="5_placement_grid"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yd8kv"]
+font_size = 200
+
+[sub_resource type="LabelSettings" id="LabelSettings_uaf1y"]
+font_size = 160
 
 [node name="Main" type="Node"]
 script = ExtResource("1_rgg4n")
 
+[node name="TargetScoreLabel" type="Label" parent="."]
+offset_left = 8100.0
+offset_top = -60.0
+offset_right = 8500.0
+offset_bottom = -10.0
+text = "Target: 0"
+label_settings = SubResource("LabelSettings_yd8kv")
+horizontal_alignment = 2
+
+[node name="FailLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1000.0
+offset_top = -129.5
+offset_right = 1000.0
+offset_bottom = 129.5
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_yd8kv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 8100.0
+offset_top = 136.0
+offset_right = 8854.0
+offset_bottom = 409.0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_yd8kv")
+horizontal_alignment = 2
+
+[node name="BurnAmountLabel" type="Label" parent="."]
+offset_left = 8107.0
+offset_top = 378.0
+offset_right = 9326.0
+offset_bottom = 597.0
+text = "Burn: 0"
+label_settings = SubResource("LabelSettings_uaf1y")
+
+[node name="GoldAmountLabel" type="Label" parent="."]
+offset_left = 8107.0
+offset_top = 606.0
+offset_right = 9326.0
+offset_bottom = 825.0
+text = "Gold: 0"
+label_settings = SubResource("LabelSettings_uaf1y")
+
+[node name="ChargeAmountLabel" type="Label" parent="."]
+offset_left = 8107.0
+offset_top = 836.0
+offset_right = 9326.0
+offset_bottom = 1055.0
+text = "Charge: 0"
+label_settings = SubResource("LabelSettings_uaf1y")
+
+[node name="MultAmountLabel" type="Label" parent="."]
+offset_left = 8107.0
+offset_top = 1066.0
+offset_right = 9326.0
+offset_bottom = 1285.0
+text = "Mult: 1x"
+label_settings = SubResource("LabelSettings_uaf1y")
+
 [node name="Bounds" type="StaticBody2D" parent="."]
 
 [node name="LeftWall" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(2000, 7000, 2000, 500, 2200, 500, 2200, 7000)
+polygon = PackedVector2Array(2000, 9000, 2000, 200, 2100, 200, 2100, 9000)
 
 [node name="LeftWallRect" type="ColorRect" parent="Bounds"]
 offset_left = 2000.0
-offset_top = 500.0
-offset_right = 2200.0
-offset_bottom = 7000.0
+offset_top = 200.0
+offset_right = 2100.0
+offset_bottom = 9000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="RightWall" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(7800, 7000, 7800, 500, 8000, 500, 8000, 7000)
+polygon = PackedVector2Array(7900, 9000, 7900, 200, 8000, 200, 8000, 9000)
 
 [node name="RightWallRect" type="ColorRect" parent="Bounds"]
-offset_left = 7800.0
-offset_top = 500.0
+offset_left = 7900.0
+offset_top = 200.0
 offset_right = 8000.0
-offset_bottom = 7000.0
+offset_bottom = 9000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="Ceiling" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(2000, 500, 8000, 500, 8000, 300, 2000, 300)
+polygon = PackedVector2Array(2000, 200, 8000, 200, 8000, 100, 2000, 100)
 
 [node name="CeilingRect" type="ColorRect" parent="Bounds"]
 offset_left = 2000.0
-offset_top = 300.0
+offset_top = 100.0
 offset_right = 8000.0
-offset_bottom = 500.0
+offset_bottom = 200.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchVisuals" type="Node2D" parent="Bounds"]
@@ -44,68 +118,68 @@ color = Color(0.2, 0.2, 0.2, 1)
 [node name="LaunchWallLeftRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
 offset_left = 7200.0
 offset_top = 2000.0
-offset_right = 7400.0
-offset_bottom = 7000.0
+offset_right = 7300.0
+offset_bottom = 9000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchExitRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
 offset_left = 7280.0
 offset_top = 1080.0
-offset_right = 7500.0
-offset_bottom = 1890.0
+offset_right = 7390.0
+offset_bottom = 1966.0
 rotation = -0.785398
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchFloorRect" type="ColorRect" parent="Bounds/LaunchVisuals"]
 offset_left = 7200.0
-offset_top = 6800.0
-offset_right = 7800.0
-offset_bottom = 7000.0
+offset_top = 8900.0
+offset_right = 7900.0
+offset_bottom = 9000.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="LaunchWallLeft" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(7200, 7000, 7200, 2000, 7400, 2000, 7400, 7000)
+polygon = PackedVector2Array(7200, 9000, 7200, 2000, 7300, 2000, 7300, 9000)
 
 [node name="LaunchExitTop" type="CollisionPolygon2D" parent="Bounds"]
 position = Vector2(600, -400)
-polygon = PackedVector2Array(7200, 2000, 6690, 1490, 6840, 1340, 7360, 1840)
+polygon = PackedVector2Array(7298, 2096, 6687, 1479, 6756, 1400, 7309, 1955)
 
 [node name="LaunchFloor" type="CollisionPolygon2D" parent="Bounds"]
-polygon = PackedVector2Array(7200, 7000, 7800, 7000, 7800, 6800, 7200, 6800)
+polygon = PackedVector2Array(7200, 9000, 7902, 9001, 7902, 8901, 7200, 8900)
 
 [node name="PaddleLeft" parent="." instance=ExtResource("1_5yns1")]
-position = Vector2(3000, 6000)
+position = Vector2(3000, 7994)
 rotation = 0.523599
 InputAction = "paddle_left"
 
 [node name="PaddleRight" parent="." instance=ExtResource("1_5yns1")]
-position = Vector2(6200, 6000)
+position = Vector2(6200, 7994)
 rotation = -0.523599
 scale = Vector2(-1, 1)
 InputAction = "paddle_right"
 
-[node name="BumperLeft" parent="." instance=ExtResource("3_nt4k8")]
-position = Vector2(3220, 3750)
-rotation = 0.261799
-
-[node name="BumperRight" parent="." instance=ExtResource("3_nt4k8")]
-position = Vector2(6170, 3720)
-rotation = -0.261799
-
 [node name="PaddleWalls" type="StaticBody2D" parent="."]
+position = Vector2(0, 1994)
 
 [node name="LeftWall" type="CollisionPolygon2D" parent="PaddleWalls"]
-polygon = PackedVector2Array(2200, 6000, 2200, 5000, 2600, 5000, 2930, 6000)
+polygon = PackedVector2Array(2098, 5942, 2101, 4784, 3009, 5942)
 
 [node name="LeftWallVisual" type="Polygon2D" parent="PaddleWalls"]
 color = Color(0.2, 0.2, 0.2, 1)
-polygon = PackedVector2Array(2200, 6000, 2200, 5000, 2600, 5000, 2930, 6000)
+polygon = PackedVector2Array(2082, 5941, 2096, 4786, 3003, 5936)
 
 [node name="RightWall" type="CollisionPolygon2D" parent="PaddleWalls"]
 position = Vector2(4090, -80)
-polygon = PackedVector2Array(2930, 6000, 2930, 5000, 2530, 5000, 2200, 6000)
+polygon = PackedVector2Array(3106, 6003, 3103, 4791, 2087, 5995)
 
 [node name="RightWallVisual" type="Polygon2D" parent="PaddleWalls"]
-position = Vector2(4090, -80)
+position = Vector2(3523.42, -314.558)
+scale = Vector2(1.25753, 1.03909)
 color = Color(0.2, 0.2, 0.2, 1)
-polygon = PackedVector2Array(2930, 6000, 2930, 5000, 2530, 5000, 2200, 6000)
+polygon = PackedVector2Array(2103, 6000, 2932.39, 4809.54, 2930, 6000)
+
+[node name="FPSCounter" parent="." instance=ExtResource("4_uaf1y")]
+
+[node name="PlacementGrid" parent="." instance=ExtResource("5_placement_grid")]
+offset_left = 2000.0
+offset_right = 7200.0

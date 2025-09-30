@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://bwoddpwlbhjoe"]
+
+[ext_resource type="Script" uid="uid://bgjvqg41as60y" path="res://scenes/components/Placeable/Bumpers/BurnPopBumper.cs" id="1_ald2u"]
+[ext_resource type="PackedScene" uid="uid://cidbl15qv1r6w" path="res://scenes/components/visual/ScoreParticle.tscn" id="2_2mcp2"]
+[ext_resource type="PackedScene" uid="uid://chblnmxauou5u" path="res://scenes/components/Hittable/HitboxComponent.tscn" id="3_78pg7"]
+[ext_resource type="PackedScene" uid="uid://dl2cowsdmo6g3" path="res://scenes/components/Hittable/HittableComponent.tscn" id="4_kiq4b"]
+[ext_resource type="PackedScene" uid="uid://1i4dssnfewd8" path="res://scenes/components/Status/BurnComponent.tscn" id="5_84ui6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_depmh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rx0hs"]
+
+[node name="BurnPopBumper" type="RigidBody2D" node_paths=PackedStringArray("HitboxComponent", "BurnComponent")]
+script = ExtResource("1_ald2u")
+HitboxComponent = NodePath("HitboxComponent")
+BurnComponent = NodePath("BurnComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_depmh")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.754274, 0.108808, 4.81307e-07, 1)
+polygon = PackedVector2Array(160, 0, 147.82, 61.22, 113.14, 113.14, 61.22, 147.82, 0, 160, -61.22, 147.82, -113.14, 113.14, -147.82, 61.22, -160, 0, -147.82, -61.22, -113.14, -113.14, -61.22, -147.82, 0, -160, 61.22, -147.82, 113.14, -113.14, 147.82, -61.22)
+
+[node name="ScoreParticle" parent="." instance=ExtResource("2_2mcp2")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("CollisionShape2DNode", "HittableComponent") instance=ExtResource("3_78pg7")]
+CollisionShape2DNode = NodePath("CollisionShape2D")
+HittableComponent = NodePath("../Hittable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_rx0hs")
+
+[node name="Hittable" parent="." node_paths=PackedStringArray("ScoreParticleComponent", "BurnComponent") instance=ExtResource("4_kiq4b")]
+ScoreParticleComponent = NodePath("../ScoreParticle")
+BurnComponent = NodePath("../BurnComponent")
+
+[node name="BurnComponent" parent="." instance=ExtResource("5_84ui6")]
+BurnIncrementAmount = 10

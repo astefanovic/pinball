@@ -1,0 +1,90 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvx7egx07j8sl"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_uij6v"]
+script/source = "using Godot;
+using System;
+
+public partial class PixelPopEffect : Node2D
+{
+    private GpuParticles2D particles;
+    private const int BASE_PARTICLE_SIZE = 800; // Size of the \"pixel\"
+
+    public override void _Ready()
+    {
+        // Attempt to get the GpuParticles2D node.
+        // It's expected to be a child of this node and named \"Particles\".
+        // This will be set up in the PixelPopEffect.tscn scene.
+        particles = GetNodeOrNull<GpuParticles2D>(\"Particles\"); 
+        
+        if (particles == null)
+        {
+            GD.PrintErr(\"PixelPopEffect: GPUParticles2D node named 'Particles' not found! Ensure it's a child of PixelPopEffect and named correctly in the scene.\");
+            return; 
+        }
+
+        particles.Emitting = false; // Start with particles off
+        particles.OneShot = true;   // Emit all at once
+        
+        // Ensure ProcessMaterial exists
+        if (particles.ProcessMaterial == null)
+        {
+            particles.ProcessMaterial = new ParticleProcessMaterial();
+        }
+
+        if (particles.ProcessMaterial is ParticleProcessMaterial material)
+        {
+            // Configure for a single, large, short-lived white pixel
+            material.EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Point;
+            material.Direction = new Vector3(0, -1, 0); // Default direction (spread will override)
+            material.Spread = 180.0f; // Spread in all directions from the point
+
+            material.InitialVelocityMin = 50.0f;
+            material.InitialVelocityMax = 100.0f;
+
+            material.AngularVelocityMin = 0.0f; // No rotation for a pixel
+            material.AngularVelocityMax = 0.0f;
+
+            material.Gravity = new Vector3(0, 200, 0); // Some gravity
+
+            // Size
+            material.ScaleMin = BASE_PARTICLE_SIZE;
+            material.ScaleMax = BASE_PARTICLE_SIZE;
+            
+            // Color - solid white
+            material.Color = Colors.White;
+
+            // Lifetime
+            particles.Lifetime = 0.3f; 
+            particles.Explosiveness = 0.9f; 
+        }
+        else
+        {
+            GD.PrintErr(\"PixelPopEffect: Could not access or create ParticleProcessMaterial.\");
+        }
+    }
+
+    // Call this to trigger the particle effect
+    // particleCount: how many \"score units\" this pop represents.
+    // For the bumper (10 score), if 1 pixel = 10 score, then particleCount = 1.
+    public void Pop(int particleCount, Vector2 globalPosition)
+    {
+        if (particles == null) 
+        {
+            GD.PrintErr(\"PixelPopEffect: Attempted to Pop, but particles node is null.\");
+            return;
+        }
+
+        GlobalPosition = globalPosition; 
+        particles.Amount = particleCount; 
+        
+        particles.Restart(); // This starts the one-shot emission
+        // GD.Print($\"PixelPopEffect: Popping {particleCount} particle(s) at {globalPosition}\");
+    }
+}
+"
+
+[node name="PixelPopEffect" type="Node2D"]
+script = SubResource("CSharpScript_uij6v")
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+amount = 1

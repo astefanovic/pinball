@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://dwesgy2fsxs0r"]
+
+[ext_resource type="Script" uid="uid://bxtnjukeax5gy" path="res://scenes/components/Placeable/Bumpers/ChargePopBumper.cs" id="1_charge"]
+[ext_resource type="PackedScene" uid="uid://cidbl15qv1r6w" path="res://scenes/components/visual/ScoreParticle.tscn" id="2_score"]
+[ext_resource type="PackedScene" uid="uid://chblnmxauou5u" path="res://scenes/components/Hittable/HitboxComponent.tscn" id="3_hitbox"]
+[ext_resource type="PackedScene" uid="uid://dl2cowsdmo6g3" path="res://scenes/components/Hittable/HittableComponent.tscn" id="4_hittable"]
+[ext_resource type="PackedScene" path="res://scenes/components/Status/ChargeComponent.tscn" id="5_charge_component"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_main"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hitbox"]
+
+[node name="ChargePopBumper" type="RigidBody2D" node_paths=PackedStringArray("HitboxComponent", "ChargeComponent")]
+script = ExtResource("1_charge")
+HitboxComponent = NodePath("HitboxComponent")
+ChargeComponent = NodePath("ChargeComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_main")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0, 0.8, 1, 1)
+polygon = PackedVector2Array(160, 0, 147.82, 61.22, 113.14, 113.14, 61.22, 147.82, 0, 160, -61.22, 147.82, -113.14, 113.14, -147.82, 61.22, -160, 0, -147.82, -61.22, -113.14, -113.14, -61.22, -147.82, 0, -160, 61.22, -147.82, 113.14, -113.14, 147.82, -61.22)
+
+[node name="ScoreParticle" parent="." instance=ExtResource("2_score")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("CollisionShape2DNode", "HittableComponent") instance=ExtResource("3_hitbox")]
+CollisionShape2DNode = NodePath("CollisionShape2D")
+HittableComponent = NodePath("../Hittable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_hitbox")
+
+[node name="Hittable" parent="." node_paths=PackedStringArray("ScoreParticleComponent", "ChargeComponent") instance=ExtResource("4_hittable")]
+ScoreParticleComponent = NodePath("../ScoreParticle")
+ChargeComponent = NodePath("../ChargeComponent")
+
+[node name="ChargeComponent" parent="." instance=ExtResource("5_charge_component")]

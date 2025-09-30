@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://cidbl15qv1r6w"]
+
+[ext_resource type="Script" uid="uid://iovtpbgfnx6y" path="res://scenes/components/visual/ScoreParticle.cs" id="1_dxury"]
+
+[sub_resource type="Curve" id="Curve_dxury"]
+bake_resolution = 30
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.41573, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qtrdo"]
+curve = SubResource("Curve_dxury")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dxury"]
+lifetime_randomness = 0.09
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 30.77
+gravity = Vector3(0, 60, 0)
+alpha_curve = SubResource("CurveTexture_qtrdo")
+
+[node name="ScoreParticle" type="Node2D" node_paths=PackedStringArray("Particle")]
+scale = Vector2(10, 10)
+script = ExtResource("1_dxury")
+Particle = NodePath("GPUParticles2D")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+scale = Vector2(6, 6)
+emitting = false
+amount = 1
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.75
+randomness = 0.2
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_dxury")

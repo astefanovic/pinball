@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgosnwb80bosi"]
+
+[ext_resource type="Script" uid="uid://cqvdsvepsy2o1" path="res://scenes/components/Placeable/Bumpers/PopBumper.cs" id="1_abcde"]
+[ext_resource type="PackedScene" uid="uid://cidbl15qv1r6w" path="res://scenes/components/visual/ScoreParticle.tscn" id="2_fghij"]
+[ext_resource type="PackedScene" uid="uid://chblnmxauou5u" path="res://scenes/components/Hittable/HitboxComponent.tscn" id="3_7fvtq"]
+[ext_resource type="PackedScene" uid="uid://dl2cowsdmo6g3" path="res://scenes/components/Hittable/HittableComponent.tscn" id="4_o3d12"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yh7cp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o3d12"]
+
+[node name="PopBumper" type="RigidBody2D" node_paths=PackedStringArray("HitboxComponent")]
+script = ExtResource("1_abcde")
+HitboxComponent = NodePath("HitboxComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_yh7cp")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.2, 0.8, 0.2, 1)
+polygon = PackedVector2Array(160, 0, 147.82, 61.22, 113.14, 113.14, 61.22, 147.82, 0, 160, -61.22, 147.82, -113.14, 113.14, -147.82, 61.22, -160, 0, -147.82, -61.22, -113.14, -113.14, -61.22, -147.82, 0, -160, 61.22, -147.82, 113.14, -113.14, 147.82, -61.22)
+
+[node name="ScoreParticle" parent="." instance=ExtResource("2_fghij")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("CollisionShape2DNode", "HittableComponent") instance=ExtResource("3_7fvtq")]
+CollisionShape2DNode = NodePath("CollisionShape2D")
+HittableComponent = NodePath("../Hittable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_o3d12")
+
+[node name="Hittable" parent="." node_paths=PackedStringArray("ScoreParticleComponent") instance=ExtResource("4_o3d12")]
+ScoreParticleComponent = NodePath("../ScoreParticle")
+ScoreValue = 100

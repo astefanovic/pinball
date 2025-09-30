@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtematou1h4q6"]
+
+[ext_resource type="Script" uid="uid://ccied4qo0wyf4" path="res://scenes/hud/FPSCounter.cs" id="1_2e4f3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_c8p2v"]
+font_size = 160
+
+[node name="FPSCounter" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 2100.0
+offset_top = 250.0
+offset_right = 2500.0
+offset_bottom = 300.0
+script = ExtResource("1_2e4f3")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -2104.0
+offset_top = -244.0
+offset_right = -1223.0
+offset_bottom = 197.0
+text = "FPS: 0
+Avg 5 sec: 0"
+label_settings = SubResource("LabelSettings_c8p2v")
