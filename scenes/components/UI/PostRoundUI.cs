@@ -180,6 +180,13 @@ public partial class PostRoundUI : Control
         _selectedBumperScene = null;
         _selectedBumperType = BumperType.None;
         _selectedPassive = null;
+        
+        // Clear any previous selection from the placement grid
+        if (_placementGridRef != null)
+        {
+            _placementGridRef.ClearSelectedBumperScene();
+        }
+        
         Show();
         // Defer SetupUI so panels are repopulated after layout is ready
         CallDeferred(nameof(SetupUI));
@@ -304,6 +311,8 @@ public partial class PostRoundUI : Control
             Hide();
             if (_placementGridRef != null)
             {
+                // Pass the selected bumper scene to the placement grid for hover highlighting
+                _placementGridRef.SetSelectedBumperScene(selectedBumperScene);
                 // Small delay so the current mouse event doesn't pass through to the grid
                 await ToSignal(GetTree().CreateTimer(0.05f), "timeout");
                 _placementGridRef.AcceptClicks = true;

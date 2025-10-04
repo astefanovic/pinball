@@ -303,11 +303,6 @@ private void OnBumperSelected(PostRoundUI.BumperType bumperType, PackedScene bum
             GD.PrintErr("Main: GridManager.Instance is null in OnBumperSelected.");
             return;
         }
-        if (gridMgr.BumperGrid[gridPosition.X, gridPosition.Y] != null)
-        {
-            // Cell is occupied — ignore the click so the player can choose a different cell.
-            return;
-        }
 
         // Try to instantiate and place the component. Guard against invalid scene types.
         Node2D newComponent = null;
@@ -343,24 +338,116 @@ private void OnBumperSelected(PostRoundUI.BumperType bumperType, PackedScene bum
             return;
         }
 
-    gridMgr.BumperGrid[gridPosition.X, gridPosition.Y] = newTrigger;
+        // Check if this is a multi-cell component and validate all required cells are free
+        if (newComponent is IMultiCell multiCell)
+        {
+            foreach (var cellOffset in multiCell.OccupiedCells)
+            {
+                int checkX = gridPosition.X + cellOffset.X;
+                int checkY = gridPosition.Y + cellOffset.Y;
+                
+                // Check bounds
+                if (checkX < 0 || checkX >= gridMgr.Columns || checkY < 0 || checkY >= gridMgr.Rows)
+                {
+                    GD.Print($"Multi-cell placement out of bounds at ({checkX}, {checkY})");
+                    newComponent.QueueFree();
+                    return;
+                }
+                
+                // Check if cell is occupied
+                if (gridMgr.BumperGrid[checkX, checkY] != null)
+                {
+                    GD.Print($"Multi-cell placement blocked - cell ({checkX}, {checkY}) is occupied");
+                    newComponent.QueueFree();
+                    return;
+                }
+            }
+            
+            // All cells are free, occupy them
+            foreach (var cellOffset in multiCell.OccupiedCells)
+            {
+                int occupyX = gridPosition.X + cellOffset.X;
+                int occupyY = gridPosition.Y + cellOffset.Y;
+                gridMgr.BumperGrid[occupyX, occupyY] = newTrigger;
+            }
+        }
+        else
+        {
+            // Single-cell component - check only the clicked cell
+            if (gridMgr.BumperGrid[gridPosition.X, gridPosition.Y] != null)
+            {
+                // Cell is occupied — ignore the click so the player can choose a different cell.
+                newComponent.QueueFree();
+                return;
+            }
+            gridMgr.BumperGrid[gridPosition.X, gridPosition.Y] = newTrigger;
+        }
         newTrigger.GridPosition = gridPosition;
 
-    Vector2 cellSize = new Vector2(placementGrid.Size.X / gridMgr.Columns, placementGrid.Size.Y / gridMgr.Rows);
-        Vector2 cellCenterLocal = new Vector2(
-            gridPosition.X * cellSize.X + cellSize.X / 2,
-            gridPosition.Y * cellSize.Y + cellSize.Y / 2
-        );
+        Vector2 cellSize = new Vector2(placementGrid.Size.X / gridMgr.Columns, placementGrid.Size.Y / gridMgr.Rows);
+        
+        // Calculate position based on whether this is a multi-cell component
+        Vector2 cellCenterLocal;
+        if (newComponent is IMultiCell multiCellComponent)
+        {
+            // For multi-cell components, center the component across all occupied cells
+            Vector2 minCell = new Vector2(float.MaxValue, float.MaxValue);
+            Vector2 maxCell = new Vector2(float.MinValue, float.MinValue);
+            
+            foreach (var cellOffset in multiCellComponent.OccupiedCells)
+            {
+                Vector2 cellPos = new Vector2(gridPosition.X + cellOffset.X, gridPosition.Y + cellOffset.Y);
+                if (cellPos.X < minCell.X) minCell.X = cellPos.X;
+                if (cellPos.Y < minCell.Y) minCell.Y = cellPos.Y;
+                if (cellPos.X > maxCell.X) maxCell.X = cellPos.X;
+                if (cellPos.Y > maxCell.Y) maxCell.Y = cellPos.Y;
+            }
+            
+            // Center of the multi-cell area
+            Vector2 centerCell = (minCell + maxCell) / 2.0f;
+            cellCenterLocal = new Vector2(
+                centerCell.X * cellSize.X + cellSize.X / 2,
+                centerCell.Y * cellSize.Y + cellSize.Y / 2
+            );
+            
+            // Apply component-specific positioning offsets
+            cellCenterLocal += GetComponentPositionOffset(newComponent);
+        }
+        else
+        {
+            // Single-cell component - center in the clicked cell
+            cellCenterLocal = new Vector2(
+                gridPosition.X * cellSize.X + cellSize.X / 2,
+                gridPosition.Y * cellSize.Y + cellSize.Y / 2
+            );
+        }
+        
         newTrigger.GlobalPosition = placementGrid.GlobalPosition + cellCenterLocal;
 
         AddChild(newComponent);
         GD.Print($"Placed {bumperType} at grid {gridPosition}");
 
-        // Successful placement: hide grid, advance round and spawn a new ball
+        // Successful placement: hide grid, clear selection, advance round and spawn a new ball
         placementGrid.Hide();
+        placementGrid.ClearSelectedBumperScene();
         currentRound++;
         SpawnBall();
-}
+    }
+
+    /// <summary>
+    /// Gets component-specific position offsets for special placement requirements
+    /// </summary>
+    private Vector2 GetComponentPositionOffset(Node2D component)
+    {
+        // DropTarget should be positioned in the top portion of cells
+        if (component is DropTarget)
+        {
+            return new Vector2(0, -480); // Move up by 480 units
+        }
+        
+        // Add other component-specific offsets here as needed
+        return Vector2.Zero; // Default: no offset
+    }
 
     private void OnPassiveSelected(IPassive passive)
     {
